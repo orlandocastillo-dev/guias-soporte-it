@@ -2,6 +2,8 @@
 
 Guías de solución de problemas para usuarios de Windows en un entorno de oficina o centro de contacto. Están escritas para que otro técnico de primer nivel pueda seguirlas sin ayuda y para que el caso quede bien registrado en el ticket.
 
+**Estas guías son la base de conocimiento de [MesaTI](https://github.com/orlandocastillo-dev/mesa-ti)**, la mesa de ayuda: allí se le sugieren al empleado mientras reporta el problema y al técnico dentro de cada ticket. Pruébalo en https://mesa-ti-chi.vercel.app/#/guias. Este repositorio es la fuente en Markdown, con los scripts de PowerShell y un visor que funciona sin internet.
+
 ## Cómo verlas
 
 - **En tu computador:** abre `ver-guias.html` con doble clic. Es un visor con todas las guías, los diagramas y los scripts, sin instalar nada.
