@@ -1,67 +1,43 @@
-# Documentación de soporte técnico (IT Support)
+# Guías de soporte técnico
 
-Guías de solución de problemas para usuarios de Windows en un entorno de oficina o centro de contacto. Están escritas para que otro técnico de primer nivel pueda seguirlas sin ayuda y para que el caso quede bien registrado en el ticket.
+Guías para resolver los problemas más comunes en equipos con Windows en una oficina o un centro de llamadas. Las escribí para que otro técnico de primer nivel las pueda seguir sin ayuda y para que el caso quede bien anotado en el ticket.
 
-**Estas guías son la base de conocimiento de [MesaTI](https://github.com/orlandocastillo-dev/mesa-ti)**, la mesa de ayuda: allí se le sugieren al empleado mientras reporta el problema y al técnico dentro de cada ticket. Pruébalo en https://mesa-ti-chi.vercel.app/#/guias. Este repositorio es la fuente en Markdown, con los scripts de PowerShell y un visor que funciona sin internet.
+Estas guías son la base de conocimiento de [MesaTI](https://github.com/orlandocastillo-dev/mesa-ti): allá se le sugieren al empleado mientras reporta el problema y al técnico dentro de cada ticket. Se pueden ver en https://mesa-ti-chi.vercel.app/#/guias.
 
-## Cómo verlas
+## Verlas
 
-- **En tu computador:** abre `ver-guias.html` con doble clic. Es un visor con todas las guías, los diagramas y los scripts, sin instalar nada.
-- **En GitHub:** los archivos `.md` se ven formateados directamente en el repositorio.
-- **En VS Code:** abre cualquier `.md` y presiona `Ctrl + Shift + V` para ver la vista previa.
+- Con doble clic en `ver-guias.html`: tiene todas las guías, los diagramas y los scripts, sin internet.
+- En GitHub, abriendo cualquier `.md`.
 
-Si editas una guía, regenera el visor con `pip install markdown` y luego `python generar-visor.py`.
+Si cambias una guía, regenera el visor con `pip install markdown` y `python generar-visor.py`.
 
-## Guías
+## Las guías
 
-| # | Problema | Categoría | Tiempo |
-| --- | --- | --- | --- |
-| 01 | [Wi-Fi o cable "Conectado, sin internet"](guias/01-conectado-sin-internet.md) | Red | 10 a 20 min |
-| 02 | [Equipo lento al iniciar y disco al 100 %](guias/02-equipo-lento-disco-al-100.md) | Rendimiento / hardware | 30 a 60 min |
-| 03 | [La impresora no imprime: cola atascada](guias/03-impresora-cola-atascada.md) | Periféricos | 5 a 15 min |
-| 04 | [Diadema sin micrófono en el softphone](guias/04-diadema-sin-microfono-softphone.md) | Audio / telefonía | 5 a 15 min |
+1. [Wi-Fi o cable "Conectado, sin internet"](guias/01-conectado-sin-internet.md)
+2. [Equipo lento al iniciar y disco al 100 %](guias/02-equipo-lento-disco-al-100.md)
+3. [La impresora no imprime: cola atascada](guias/03-impresora-cola-atascada.md)
+4. [Diadema sin micrófono en el softphone](guias/04-diadema-sin-microfono-softphone.md)
 
-## Scripts de apoyo (PowerShell)
+Todas siguen la misma [plantilla](plantilla-guia.md): a qué aplica y cuánto tarda, el síntoma como lo cuenta el usuario, las causas más comunes, un diagrama para descartar primero lo que no es del equipo, los pasos con el comando exacto, qué confirmar antes de cerrar, cuándo escalar y una nota lista para copiar en el ticket.
 
-| Script | Para qué sirve | Administrador |
-| --- | --- | --- |
-| [`diagnostico-red.ps1`](scripts/diagnostico-red.ps1) | Revisa IP, puerta de enlace, DNS, salida a internet y proxy. Guarda un informe en el escritorio para adjuntarlo al ticket. Con `-Reparar` vacía la caché DNS y renueva la IP. | Solo con `-Reparar` |
-| [`limpiar-cola-impresion.ps1`](scripts/limpiar-cola-impresion.ps1) | Detiene el Spooler, borra los trabajos atascados y lo vuelve a iniciar. | Sí |
-| [`info-equipo.ps1`](scripts/info-equipo.ps1) | Ficha técnica del equipo (modelo, serie, SO, RAM, discos con su salud, red) con avisos automáticos. Exporta a JSON o CSV. | No |
+## Scripts de PowerShell
 
-Para ejecutarlos en un equipo con la política de ejecución restringida, sin cambiarla de forma permanente:
+- [`diagnostico-red.ps1`](scripts/diagnostico-red.ps1): revisa IP, puerta de enlace, DNS, salida a internet y proxy, y guarda un informe en el escritorio. Con `-Reparar` vacía la caché DNS y renueva la IP (pide administrador).
+- [`limpiar-cola-impresion.ps1`](scripts/limpiar-cola-impresion.ps1): detiene el Spooler, borra los trabajos atascados y lo vuelve a iniciar (pide administrador).
+- [`info-equipo.ps1`](scripts/info-equipo.ps1): ficha del equipo (modelo, serie, sistema, RAM, discos y red), con opción de exportar a JSON o CSV.
+
+Si la política de ejecución está restringida:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\diagnostico-red.ps1
 ```
 
-## Cómo están escritas
+## Lo que he aprendido haciendo soporte
 
-Todas las guías siguen la misma [plantilla](plantilla-guia.md), pensada para el trabajo real de una mesa de ayuda:
+- Preguntar antes de tocar: "¿a tus compañeros también les pasa?" ahorra la mitad del diagnóstico.
+- Cambiar una cosa a la vez y probar, para saber qué lo arregló.
+- Avisar antes de reiniciar o de borrar trabajos de impresión.
+- El que confirma que quedó resuelto es el usuario.
+- Anotar el caso aunque se haya resuelto rápido, porque los que se repiten son los que justifican un cambio de fondo.
 
-1. **Ficha inicial:** a qué aplica, nivel de soporte, tiempo estimado, riesgo y permisos necesarios. El técnico sabe antes de empezar si puede hacerlo él o debe escalar.
-2. **Síntoma** descrito como lo reporta el usuario, no como lo nombraría un técnico.
-3. **Causas más comunes**, de la más probable a la menos probable.
-4. **Diagrama de diagnóstico** para descartar primero lo que no es del equipo (la red, la impresora, la diadema) antes de tocar la configuración.
-5. **Pasos numerados** con el comando exacto y el resultado esperado.
-6. **Lista de verificación** para confirmar con el usuario antes de cerrar.
-7. **Criterio de escalamiento** con la información que necesita el siguiente nivel.
-8. **Nota para el ticket** lista para copiar, con síntoma, diagnóstico, acciones y resultado.
-
-Los diagramas usan [Mermaid](https://mermaid.js.org/), que GitHub muestra como imagen directamente.
-
-## Capturas de pantalla
-
-Cada guía indica qué captura va en cada paso (`Captura sugerida: capturas/...`). La lista completa con los nombres de archivo está en [`capturas/README.md`](capturas/README.md).
-
-## Buenas prácticas que aplico
-
-- **Preguntar antes de tocar.** "¿A tus compañeros les pasa?" ahorra la mitad de los diagnósticos.
-- **Un cambio a la vez** y probar después de cada uno, para saber qué lo arregló.
-- **Avisar antes de cualquier paso con impacto** (reinicios, trabajos de impresión que se pierden).
-- **El usuario confirma el cierre**, no el técnico.
-- **Documentar aunque se haya resuelto rápido.** Los casos repetidos son los que justifican un cambio de fondo (una IP fija para la impresora, un SSD para el equipo lento).
-
----
-
-Orlando Castillo, estudiante de Ingeniería de Sistemas.
+Las capturas que van en cada paso están listadas en [`capturas/README.md`](capturas/README.md).
